@@ -13,6 +13,7 @@ func LoginByTwitter(c *gin.Context) {
 	oc := NewTWClient()
 	rt, err := oc.RequestTemporaryCredentials(nil, callbackURL, nil)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, nil)
 		return
 	}
@@ -66,6 +67,7 @@ func TwitterCallback(c *gin.Context) {
 
 	code, at, err := GetAccessToken(&oauth.Credentials{Token: rt, Secret: rts}, ov)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(code, nil)
 		return
 	}
@@ -76,12 +78,12 @@ func TwitterCallback(c *gin.Context) {
 	}{}
 	code, err = GetMe(at, &account)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(code, nil)
 		return
 	}
 
 	// TODO use id to make user login.
-	fmt.Println(account)
 
 	c.JSON(http.StatusOK, nil)
 	return

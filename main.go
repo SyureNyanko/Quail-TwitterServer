@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte("redis_secret"))
+
+	store := sessions.NewCookieStore([]byte("secret"))
 
 	r := gin.New()
 	r.Use(gin.Logger())

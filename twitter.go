@@ -15,7 +15,7 @@ const (
 	accessTokenURL   = "https://api.twitter.com/oauth/access_token"
 	accountURL       = "https://api.twitter.com/1.1/account/verify_credentials.json"
 
-	callbackURL = "http://localhost:8080/login/twitter/auth/callback"
+	callbackURL = "http://127.0.0.1:8080/login/twitter/auth/callback"
 )
 
 var (
