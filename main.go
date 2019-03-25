@@ -16,6 +16,7 @@ func main() {
 
 	r.GET("/login/twitter/auth", LoginByTwitter)
 	r.GET("/login/twitter/auth/callback", TwitterCallback)
+	r.POST("/twitter/post", Post)
 
 	r.Run()
 }

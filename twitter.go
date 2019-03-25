@@ -20,14 +20,14 @@ const (
 )
 
 var (
-	twitterKey    string
-	twitterSecret string
+	consumerKey    string
+	consumerSecret string
 )
 
 func init() {
-	twitterKey = os.Getenv("TEST_KEY")
-	twitterSecret = os.Getenv("TEST_SECRET")
-	if twitterSecret == "" {
+	consumerKey = os.Getenv("TEST_KEY")
+	consumerSecret = os.Getenv("TEST_SECRET")
+	if consumerSecret == "" {
 		fmt.Println("env is not set")
 		os.Exit(1)
 	}
@@ -39,8 +39,8 @@ func NewTWClient() *oauth.Client {
 		ResourceOwnerAuthorizationURI: authorizationURL,
 		TokenRequestURI:               accessTokenURL,
 		Credentials: oauth.Credentials{
-			Token:  twitterKey,
-			Secret: twitterSecret,
+			Token:  consumerKey,
+			Secret: consumerSecret,
 		},
 	}
 

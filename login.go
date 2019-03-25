@@ -72,18 +72,9 @@ func TwitterCallback(c *gin.Context) {
 		return
 	}
 
-	account := struct {
-		ID         string `json:"id_str"`
-		ScreenName string `json:"screen_name"`
-	}{}
-	code, err = GetMe(at, &account)
-	if err != nil {
-		fmt.Println(err)
-		c.JSON(code, nil)
-		return
-	}
-
-	// TODO use id to make user login.
+	session.Set("token", at.Token)
+	session.Set("token_secret", at.Secret)
+	session.Save()
 
 	c.JSON(http.StatusOK, nil)
 	return
