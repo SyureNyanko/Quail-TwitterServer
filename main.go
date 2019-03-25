@@ -18,5 +18,5 @@ func main() {
 	r.GET("/login/twitter/auth/callback", TwitterCallback)
 	r.POST("/twitter/post", Post)
 
-	r.Run()
+	r.Run("127.0.0.1:8080")
 }
