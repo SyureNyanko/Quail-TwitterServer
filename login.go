@@ -11,6 +11,7 @@ import (
 
 func LoginByTwitter(c *gin.Context) {
 	oc := NewTWClient()
+	fmt.Println("loginredi:" + callbackURL)
 	rt, err := oc.RequestTemporaryCredentials(nil, callbackURL, nil)
 	if err != nil {
 		fmt.Println(err)
@@ -23,8 +24,11 @@ func LoginByTwitter(c *gin.Context) {
 	session.Set("request_token_secret", rt.Secret)
 	session.Save()
 
+	fmt.Println("loginredi:2" + callbackURL)
 	url := oc.AuthorizationURL(rt, nil)
 
+	c.Writer.Header().Set("Pragma", "no-cache")
+	c.Writer.Header().Set("Cache-Control", "no-cache")
 	c.Redirect(http.StatusMovedPermanently, url)
 	return
 }
@@ -76,6 +80,6 @@ func TwitterCallback(c *gin.Context) {
 	session.Set("token_secret", at.Secret)
 	session.Save()
 
-	c.JSON(http.StatusOK, nil)
+	c.Redirect(http.StatusMovedPermanently, RedirectUrl)
 	return
 }
