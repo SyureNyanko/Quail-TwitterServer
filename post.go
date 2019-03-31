@@ -22,13 +22,17 @@ type StatusJSON struct {
 
 
 func Post(c *gin.Context) {
-	fmt.Println("post")
+	fmt.Printf("post %+v \n", *c)
 	var jsonIn StatusJSON
 	ret := c.Bind(&jsonIn)
-	fmt.Println(ret)
-
+	fmt.Printf("json : %+v \n", jsonIn)
+	if ret != nil {
+		fmt.Println(ret)
+		c.JSON(http.StatusBadRequest, nil)
+		return 
+	}
 	session := sessions.Default(c)
-	v := session.Get("request_token")
+	v := session.Get("token")
 	if v == nil {
 		fmt.Println("sessino nil")
 		c.JSON(http.StatusBadRequest, nil)
@@ -37,7 +41,7 @@ func Post(c *gin.Context) {
 	
 	rt := v.(string)
 	fmt.Println(rt)
-	v = session.Get("request_token_secret")
+	v = session.Get("token_secret")
 	if v == nil {
 		c.JSON(http.StatusBadRequest, nil)
 		return
@@ -47,9 +51,16 @@ func Post(c *gin.Context) {
 	fmt.Println(rts)
 	api := getTwitterAPI(rt, rts)
 	fmt.Println(jsonIn.Status)
-	api.PostTweet(jsonIn.Status, nil)
-	
+
+
+	tweet, err := api.PostTweet(jsonIn.Status, nil)
+	if err != nil {
+		fmt.Println("Post Error", err)
+	}
+	fmt.Println(tweet)
+
 	c.Header("Access-Control-Allow-Origin", CORS_ORIGIN_WHITELIST)
+	c.Header("Access-Control-Allow-Credentials", "true")
 	c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
 	c.Header("Access-Control-Allow-Headers", "authorization, origin, content-type, accept")
 	c.Header("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS")

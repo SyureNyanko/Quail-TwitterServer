@@ -17,8 +17,9 @@ func CORS(c *gin.Context) {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", CORS_ORIGIN_WHITELIST)
 			c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE")
 			c.Writer.Header().Set("Access-Control-Allow-Headers", headers)
-			c.Data(200, "text/plain", []byte{})
 			c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+			c.Data(200, "text/plain", []byte{})
+			
 			fmt.Println("dd")
 		} else {
 			c.Data(403, "text/plain", []byte{})
